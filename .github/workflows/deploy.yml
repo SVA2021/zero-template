@@ -1,0 +1,26 @@
+name: Build
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  ci:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: borales/actions-yarn@v3.0.0
+        with:
+          cmd: install 
+      - uses: borales/actions-yarn@v3.0.0
+        with:
+          cmd: build 
+
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          publish_branch: deploy
+          publish_dir: ./build
+          force_orphan: true
